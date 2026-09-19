@@ -1,0 +1,21 @@
+fmod VOCAL is
+   protecting BOOL .
+   sort V .
+
+   ops A E I O U : -> V .
+   op esIgual : V V -> Bool .
+   op esDistinta : V V -> Bool .
+   op esMenor : V V -> Bool .
+
+   var v w : V .
+
+   eq esIgual(v, v) = true .
+   eq esIgual(v, w) = false .
+   eq esDistinta(v, w) = not esIgual(v, w) .
+   eq esMenor(v, v) = false .
+   eq esMenor(A, w) = true .
+   eq esMenor(E, w) = if esIgual(w, A) then false else true fi .
+   eq esMenor(I, w) = if esIgual(w, A) or esIgual(w, E) then false else true fi .
+   eq esMenor(O, w) = if esIgual(w, A) or esIgual(w, E) or esIgual(w, I) then false else true fi .
+   eq esMenor(U, w) = false .
+endfm

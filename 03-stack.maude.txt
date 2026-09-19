@@ -1,0 +1,51 @@
+fmod PILA is
+   protecting BOOL .
+   protecting VOCAL .
+   protecting NATURAL .
+
+   sort MensajePilas .
+   sort P .
+   subsorts MensajePilas < V .
+
+   op pilaVacia : -> P .
+   op esVacia : P -> Bool .
+   op push : V P -> P .
+   op pop : P -> P .
+   op tope : P -> V .
+   op primero : P -> V .
+   op esIgual : P P -> Bool .
+   op tamano : P -> N .
+   op cuentaVocal : V P -> N .
+   op ERRORPILAVACIA : -> MensajePilas .
+
+   var p q : P .
+   var v w v2 : V .
+
+   eq esVacia(pilaVacia) = true .
+   eq esVacia(push(v, p)) = false .
+
+   eq pop(pilaVacia) = pilaVacia .
+   eq pop(push(v, p)) = p .
+
+   eq tope(pilaVacia) = ERRORPILAVACIA .
+   eq tope(push(v, p)) = v .
+
+   eq primero(pilaVacia) = ERRORPILAVACIA .
+   eq primero(push(v, pilaVacia)) = v .
+   eq primero(push(v, p)) = primero(p) .
+
+   eq esIgual(pilaVacia, pilaVacia) = true .
+   eq esIgual(pilaVacia, push(v, p)) = false .
+   eq esIgual(push(v, p), pilaVacia) = false .
+   eq esIgual(push(v, p), push(w, q)) = esIgual(v, w) and esIgual(p, q) .
+
+   eq tamano(pilaVacia) = cero .
+   eq tamano(push(v, p)) = sucesor(tamano(p)) .
+
+   eq cuentaVocal(v, pilaVacia) = cero .
+   eq cuentaVocal(v, push(v2, p)) = 
+       if esIgual(v, v2) 
+       then sucesor(cuentaVocal(v, p))
+       else cuentaVocal(v, p)
+       fi .
+endfm

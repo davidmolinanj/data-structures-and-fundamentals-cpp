@@ -1,0 +1,49 @@
+fmod COLA is
+   protecting BOOL .
+   protecting VOCAL .
+   protecting NATURAL .
+
+   sort MensajeColas .
+   sort C .
+   subsorts MensajeColas < V .
+
+   op colaVacia : -> C .
+   op esVacia : C -> Bool .
+   op meter : V C -> C .
+   op sacar : C -> C .
+   op cabecera : C -> V .
+   op meterVarias : V N C -> C .
+   op sacarVarias : N C -> C .
+   op esIgual : C C -> Bool .
+   op tamano : C -> N .
+   op ERRORCOLAVACIA : -> MensajeColas .
+
+   var v v2 : V .
+   var c q : C .
+   var n : N .
+
+   eq esVacia(colaVacia) = true .
+   eq esVacia(meter(v, c)) = false .
+
+   eq sacar(colaVacia) = colaVacia .
+   eq sacar(meter(v, colaVacia)) = colaVacia .
+   eq sacar(meter(v2, c)) = meter(v2, sacar(c)) .
+
+   eq cabecera(colaVacia) = ERRORCOLAVACIA .
+   eq cabecera(meter(v, colaVacia)) = v .
+   eq cabecera(meter(v2, c)) = cabecera(c) .
+
+   eq esIgual(colaVacia, colaVacia) = true .
+   eq esIgual(colaVacia, meter(v, q)) = false .
+   eq esIgual(meter(v, c), colaVacia) = false .
+   eq esIgual(meter(v, c), meter(v2, q)) = esIgual(v, v2) and esIgual(c, q) .
+
+   eq tamano(colaVacia) = cero .
+   eq tamano(meter(v, c)) = sucesor(tamano(c)) .
+
+   eq meterVarias(v, cero, c) = c .
+   eq meterVarias(v, sucesor(n), c) = meter(v, meterVarias(v, n, c)) .
+
+   eq sacarVarias(cero, c) = c .
+   eq sacarVarias(sucesor(n), c) = sacarVarias(n, sacar(c)) .
+endfm

@@ -1,0 +1,67 @@
+fmod CONJUNTO is
+   protecting BOOL .
+   protecting NATURAL .
+   protecting VOCAL .
+   sort C .
+
+   op cjtoVacio : -> C .
+   op esVacio : C -> Bool .
+   op insertar : V C -> C .
+   op esMiembro : V C -> Bool .
+   op tamano : C -> N .
+   op union : C C -> C .
+   op interseccion : C C -> C .
+   op diferencia : C C -> C .
+   op eliminar : V C -> C .
+   op esMenorIgual : C C -> Bool .
+   op esMenor : C C -> Bool .
+   op esIgual : C C -> Bool .
+   op disjuntos : C C -> Bool .
+
+   var v w : V .
+   var c d : C .
+
+   eq esVacio(cjtoVacio) = true .
+   eq esVacio(insertar(v, c)) = false .
+
+   eq esMiembro(v, cjtoVacio) = false .
+   eq esMiembro(v, insertar(w, c)) = esIgual(v, w) or esMiembro(v, c) .
+
+   eq tamano(cjtoVacio) = cero .
+   eq tamano(insertar(v, c)) = suma(tamano(c), if esMiembro(v, c) then cero else sucesor(cero) fi) .
+
+   eq union(cjtoVacio, cjtoVacio) = cjtoVacio .
+   eq union(cjtoVacio, c) = c .
+   eq union(c, cjtoVacio) = c .
+   eq union(insertar(v, c), d) = insertar(v, union(c, d)) .
+
+   eq interseccion(cjtoVacio, d) = cjtoVacio .
+   eq interseccion(insertar(v, c), d) = 
+       if esMiembro(v, d) 
+       then insertar(v, interseccion(c, d)) 
+       else interseccion(c, d) 
+       fi .
+
+   eq diferencia(cjtoVacio, d) = cjtoVacio .
+   eq diferencia(insertar(v, c), d) = 
+       if esMiembro(v, d) 
+       then diferencia(c, d) 
+       else insertar(v, diferencia(c, d)) 
+       fi .
+
+   eq eliminar(v, cjtoVacio) = cjtoVacio .
+   eq eliminar(v, insertar(w, c)) = 
+       if esIgual(v, w) 
+       then eliminar(v, c) 
+       else insertar(w, eliminar(v, c)) 
+       fi .
+
+   eq esMenorIgual(cjtoVacio, d) = true .
+   eq esMenorIgual(insertar(v, c), d) = esMiembro(v, d) and esMenorIgual(c, d) .
+
+   eq esIgual(c, d) = esMenorIgual(c, d) and esMenorIgual(d, c) .
+
+   eq esMenor(c, d) = esMenorIgual(c, d) and not esIgual(c, d) .
+
+   eq disjuntos(c, d) = esVacio(interseccion(c, d)) .
+endfm

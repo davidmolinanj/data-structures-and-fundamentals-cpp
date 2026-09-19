@@ -1,0 +1,42 @@
+fmod NATURAL is
+   protecting BOOL .
+   sort N .
+   sort NoN .
+   subsort NoN < N .
+
+   op cero : -> N .
+   op sucesor : N -> N .
+   op suma : N N -> N .
+   op mult : N N -> N .
+   op esCero : N -> Bool .
+   op esIgual : N N -> Bool .
+   op esDistinto : N N -> Bool .
+   op esMenor : N N -> Bool .
+   op esMenorIgual : N N -> Bool .
+
+   op NODEFINIDO : -> NoN .
+   op INFINITO : -> NoN .
+   op NEGATIVO : -> NoN .
+
+   var n m : N .
+
+   eq suma(cero, n) = n .
+   eq suma(sucesor(m), n) = sucesor(suma(m, n)) .
+
+   eq mult(cero, n) = cero .
+   eq mult(sucesor(m), n) = suma(n, mult(m, n)) .
+
+   eq esCero(cero) = true .
+   eq esCero(sucesor(n)) = false .
+
+   eq esIgual(cero, n) = esCero(n) .
+   eq esIgual(sucesor(n), cero) = false .
+   eq esIgual(sucesor(n), sucesor(m)) = esIgual(n, m) .
+   eq esDistinto(n, m) = not esIgual(n, m) .
+
+   eq esMenor(n, cero) = false .
+   eq esMenor(cero, sucesor(n)) = true .
+   eq esMenor(sucesor(n), sucesor(m)) = esMenor(n, m) .
+
+   eq esMenorIgual(n, m) = esMenor(n, m) or esIgual(n, m) .
+endfm
